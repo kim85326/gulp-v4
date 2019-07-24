@@ -8,7 +8,7 @@ const autoprefixer = require("autoprefixer");
 // # gulp --env production
 const envOptions = {
     string: "env",
-    default: { env: "development" }
+    default: { env: "development" },
 };
 
 const options = minimist(process.argv.slice(2), envOptions);
@@ -18,7 +18,7 @@ console.log(options);
 function clean() {
     return src(["./public"], {
         allowEmpty: true,
-        read: false
+        read: false,
     }).pipe($.clean());
 }
 
@@ -28,7 +28,7 @@ function copy() {
         .pipe(dest("./public/"))
         .pipe(
             browserSync.reload({
-                stream: true
+                stream: true,
             })
         );
 }
@@ -38,8 +38,8 @@ function sass() {
     // PostCSS AutoPrefixer
     const processors = [
         autoprefixer({
-            overrideBrowserslist: ["last 3 version", "ie 6-8"]
-        })
+            overrideBrowserslist: ["last 3 version", "ie 6-8"],
+        }),
     ];
 
     return src("./src/scss/**/*.scss")
@@ -52,7 +52,7 @@ function sass() {
         .pipe(dest("./public/css"))
         .pipe(
             browserSync.reload({
-                stream: true
+                stream: true,
             })
         );
 }
@@ -65,7 +65,7 @@ function babel() {
             .pipe($.sourcemaps.init())
             .pipe(
                 $.babel({
-                    presets: ["@babel/env"]
+                    presets: ["@babel/env"],
                 })
             )
             // .pipe($.concat("all.js"))
@@ -75,8 +75,8 @@ function babel() {
                     process.env.NODE_ENV === "production",
                     $.uglify({
                         compress: {
-                            drop_console: true
-                        }
+                            drop_console: true,
+                        },
                     })
                 )
             )
@@ -97,9 +97,9 @@ function minifyImage() {
 function runBrowserSync() {
     browserSync.init({
         server: {
-            baseDir: "./public"
+            baseDir: "./public",
         },
-        reloadDebounce: 1000 // 設定 reload 時間間隔
+        reloadDebounce: 1000, // 設定 reload 時間間隔
     });
 }
 
@@ -107,6 +107,7 @@ function runBrowserSync() {
 function watchFiles() {
     watch("./src/scss/**/*.scss", sass);
     watch("./src/js/**/*.js", babel);
+    watch("./src/**/*.html", copy);
 }
 
 // 自動發布 public 到 github page

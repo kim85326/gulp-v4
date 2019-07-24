@@ -2,7 +2,8 @@
     "scripts": {
         "start": "gulp",
         "build": "gulp build --env production",
-        "deploy": "gulp build & gulp deploy"
+        "predeploy": "gulp build",
+        "deploy": "gulp deploy"
     },
     "devDependencies": {
         "@babel/core": "^7.5.5",
